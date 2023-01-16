@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,7 +13,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/login');
+      if (Hive.box('credentials').get('username') != null) {
+        Navigator.pushReplacementNamed(context, '/login');
+        return;
+      }
+
+      Navigator.pushReplacementNamed(context, '/register');
     });
   }
 

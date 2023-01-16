@@ -34,10 +34,13 @@ class MyApp extends StatelessWidget {
 }
 
 Future<void> _initHive() async {
-  const encryptionKeyName = 'SuperAwesomeEncryptionKeyForSecureStorage';
-
   await Hive.initFlutter();
 
+  _initHiveEncryptedBoxWithType<Password>('passwords_encryption_key', 'passwords', PasswordAdapter());
+  _initHiveEncryptedBox('credentials_encryption_key', 'credentials');
+}
+
+void _initHiveEncryptedBoxWithType<T>(String encryptionKeyName, String boxName, TypeAdapter<T> adapter) async {
   const storage = FlutterSecureStorage();
   final String? encryptionKey = await storage.read(key: encryptionKeyName);
   if (encryptionKey == null) {
@@ -50,9 +53,28 @@ Future<void> _initHive() async {
 
   final key = await storage.read(key: encryptionKeyName);
   final encryptionKeyBytes = base64Url.decode(key!);
-  Hive.registerAdapter(PasswordAdapter());
-  await Hive.openBox<Password>(
-    'passwords',
+  Hive.registerAdapter(adapter);
+  await Hive.openBox<T>(
+    boxName,
+    encryptionCipher: HiveAesCipher(encryptionKeyBytes),
+  );
+}
+
+void _initHiveEncryptedBox(String encryptionKeyName, String boxName) async {
+  const storage = FlutterSecureStorage();
+  final String? encryptionKey = await storage.read(key: encryptionKeyName);
+  if (encryptionKey == null) {
+    final key = Hive.generateSecureKey();
+    await storage.write(
+      key: encryptionKeyName,
+      value: base64UrlEncode(key),
+    );
+  }
+
+  final key = await storage.read(key: encryptionKeyName);
+  final encryptionKeyBytes = base64Url.decode(key!);
+  await Hive.openBox(
+    boxName,
     encryptionCipher: HiveAesCipher(encryptionKeyBytes),
   );
 }
