@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:passman/data/password.dart';
+import 'package:passman/screens/home_screen.dart';
 import 'package:passman/screens/login_screen.dart';
 import 'package:passman/screens/register_screen.dart';
 import 'package:passman/screens/splash_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
+        '/home':(context) => const HomeScreen(),
       },
     );
   }
