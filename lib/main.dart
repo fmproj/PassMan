@@ -40,6 +40,7 @@ Future<void> _initHive() async {
 
   _initHiveEncryptedBoxWithType<Password>('passwords_encryption_key', 'passwords', PasswordAdapter());
   _initHiveEncryptedBox('credentials_encryption_key', 'credentials');
+  Hive.openBox('groups');
 }
 
 void _initHiveEncryptedBoxWithType<T>(String encryptionKeyName, String boxName, TypeAdapter<T> adapter) async {

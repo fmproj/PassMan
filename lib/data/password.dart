@@ -5,15 +5,13 @@ part 'password.g.dart';
 @HiveType(typeId: 0)
 class Password extends HiveObject {
   @HiveField(0)
-  String? id;
+  String name;
   @HiveField(1)
-  String? name;
+  String group;
   @HiveField(2)
-  String? group;
-  @HiveField(3)
-  String? password;
-  @HiveField(4, defaultValue: false)
-  bool? hint;
+  String password;
+  @HiveField(3, defaultValue: false)
+  bool hint;
   
-  Password({this.id, this.name, this.group, this.password, this.hint});
+  Password(this.name, this.group, this.password, {this.hint = false});
 }

@@ -17,27 +17,24 @@ class PasswordAdapter extends TypeAdapter<Password> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Password(
-      id: fields[0] as String?,
-      name: fields[1] as String?,
-      group: fields[2] as String?,
-      password: fields[3] as String?,
-      hint: fields[4] == null ? false : fields[4] as bool?,
+      fields[0] as String,
+      fields[1] as String,
+      fields[2] as String,
+      hint: fields[3] == null ? false : fields[3] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Password obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.group)
-      ..writeByte(3)
-      ..write(obj.password)
       ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.group)
+      ..writeByte(2)
+      ..write(obj.password)
+      ..writeByte(3)
       ..write(obj.hint);
   }
 
